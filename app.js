@@ -3,12 +3,37 @@ const PORT = 3000;
 
 // Import required modules
 const express = require('express');
+const sql = require('mssql');
 
 // Create an Express application
 const app = express();
 
 // Define middleware to parse JSON requests
 app.use(express.json());
+
+const config = {
+    user: 'DESKTP-NM8G4VO\\HP', // Double backslashes for escaping
+    password: '',
+    server: '.',
+    database: 'Utibu',
+    options: {
+        encrypt: true
+    }
+};
+
+const pool = new sql.ConnectionPool(config);
+
+pool.connect()
+    .then(() => {
+        console.log("Connected to the database");
+        // You can perform database operations here
+    })
+    .then(() => {
+        console.log("my name is nick");
+    })
+    .catch(err => {
+        console.error('Error', err);
+    });
 
 // Define a route handler for the root path
 app.get('/', (req, res) => {
