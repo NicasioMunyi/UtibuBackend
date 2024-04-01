@@ -1,12 +1,21 @@
-const IP_ADDRESS = '10.10.10.215';
-const PORT = 3000;
-
-// Import required modules
 const express = require('express');
+const session = require('express-session');
 const medicationRoutes = require('./routes/mediRoutes');
+const userRoutes = require('./routes/authRoutes');
+const crypto = require('crypto')
 
-// Create an Express application
+
+const secretKey = crypto.randomBytes(32).toString('hex');
+
+
 const app = express();
+
+// Configure session middleware
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true
+}));
 
 // Define middleware to parse JSON requests
 app.use(express.json());
@@ -14,11 +23,16 @@ app.use(express.json());
 // Define medication routes
 app.use('/api/medications', medicationRoutes);
 
+// Define user routes
+app.use('/api/users', userRoutes);
+
 // Define a default route
 app.get('/', (req, res) => {
     res.send('Welcome to Utibu!');
 });
 
-app.listen(PORT, IP_ADDRESS, () => {
-    console.log(`Server is running on http://${IP_ADDRESS}:${PORT}`);
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
