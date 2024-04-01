@@ -59,3 +59,23 @@ CREATE TABLE Statements (
 
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
+
+
+
+INSERT INTO Medications (name, description, stock_quantity, unit_price)
+VALUES
+    ('Medication A', 'Description of Medication A', 100, 2000),
+    ('Medication B', 'Description of Medication B', 150, 1050),
+    ('Medication C', 'Description of Medication C', 200, 1200),
+    ('Medication D', 'Description of Medication D', 75, 1000),
+    ('Medication E', 'Description of Medication E', 120, 1299);
+
+
+INSERT INTO Users (username, password, email)
+VALUES
+    ('Nicasio Munyi', 'nick', 'nicasio@gmail.com'),
+    ('Nick Alfred', 'alfred', 'alfred @gmail.com'),
+    ('John Kim', 'john', 'joohn@gmail.com'),
+    ('user4', 'password4', 'user4@gmail.com'),
+    ('user5', 'password5', 'user5@gmail.com');
+
