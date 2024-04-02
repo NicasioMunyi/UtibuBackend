@@ -1,4 +1,6 @@
 const pool = require('../config/database');
+
+
 async function getAllMedications() {
     try {
         const connection = await pool.getConnection();
@@ -68,7 +70,32 @@ async function deleteMedication(medicationId) {
     }
 }
 
+// Function to update stock quantity for medications
+async function updateStock(medicationId, newStockQuantity) {
+    let connection;
+    try {
+        connection = await pool.getConnection();
+        await connection.query('UPDATE Medications SET stock_quantity = ? WHERE medication_id = ?', [newStockQuantity, medicationId]);
+        // Commit the transaction
+        await connection.commit();
+    } catch (error) {
+        if (connection) {
+            await connection.rollback();
+        }
+        console.error(error);
+        throw new Error('Error updating stock');
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
+
+
 module.exports = {
+
+    updateStock,
     getAllMedications,
     getMedicationById,
     addMedication,

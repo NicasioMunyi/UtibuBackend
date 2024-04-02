@@ -1,20 +1,16 @@
 const pool = require('../config/database');
 
-async function createOrder(orderData, userId) {
-    let connection; // Declare connection variable outside try block
-
+async function createOrder(orderData, userId, status) {
+    let connection;
     try {
-        // Start a database transaction
         connection = await pool.getConnection();
         await connection.beginTransaction();
 
         // Insert the order data into the Orders table
         const [orderResult] = await connection.query('INSERT INTO Orders (user_id, status) VALUES (?, ?)', [
             userId,
-            'Active'
+            status
         ]);
-
-        // Extract the order ID from the result
         const orderId = orderResult.insertId;
 
         // Insert each item in the order into the Order_Items table
@@ -29,28 +25,19 @@ async function createOrder(orderData, userId) {
 
         // Commit the transaction
         await connection.commit();
-
-        return orderId; // Return the ID of the newly inserted order
+        return orderId;
     } catch (error) {
-        // Rollback the transaction if an error occurs
         if (connection) {
             await connection.rollback();
         }
         console.error(error);
         throw new Error('Error creating order');
     } finally {
-        // Release the connection in the finally block
         if (connection) {
             connection.release();
         }
     }
 }
-
-// Export the model function for use in other modules
-module.exports = {
-    createOrder
-};
-
 
 
 // Function to retrieve an order by its ID
@@ -79,8 +66,19 @@ async function getOrderById(orderId) {
     }
 }
 
+async function getOrdersByUserId(userId) {
+    try {
+        const [rows] = await pool.query('SELECT * FROM Orders WHERE user_id = ?', [userId]);
+        return rows;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Error Fetching orders by userID');
+    }
+}
+
 // Export the model functions for use in other modules
 module.exports = {
     createOrder,
-    getOrderById
+    getOrderById,
+    getOrdersByUserId
 };

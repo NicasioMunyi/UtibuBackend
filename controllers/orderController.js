@@ -1,4 +1,5 @@
 // Import the order service
+const { use } = require('../routes/mediRoutes');
 const orderService = require('../service/orderServices');
 
 // Controller function to handle order creation
@@ -28,9 +29,23 @@ async function getOrderById(req, res) {
         res.status(500).send('Error fetching order');
     }
 }
+async function getOrdersByUserId(req, res) {
+    try {
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).send('User not authenticated');
+        }
+        const orders = await orderService.getOrdersByUserId(userId);
+        res.json(orders);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error Fetching orders by user ID');
+    }
+}
 
 // Export the controller functions for use in the orderRoutes.js file
 module.exports = {
+    getOrdersByUserId,
     createOrder,
     getOrderById
 };
