@@ -2,11 +2,11 @@ const express = require('express');
 const session = require('express-session');
 const medicationRoutes = require('./routes/mediRoutes');
 const userRoutes = require('./routes/authRoutes');
-const crypto = require('crypto')
-
+const orderRoutes = require('./routes/orderRoutes'); // Import order routes
+const crypto = require('crypto');
+const myInfoRouter = require('./routes/myInfoRouter');
 
 const secretKey = crypto.randomBytes(32).toString('hex');
-
 
 const app = express();
 
@@ -25,6 +25,11 @@ app.use('/api/medications', medicationRoutes);
 
 // Define user routes
 app.use('/api/users', userRoutes);
+
+// Define order routes
+app.use('/api/orders', orderRoutes);
+
+app.use('/api', myInfoRouter);
 
 // Define a default route
 app.get('/', (req, res) => {
