@@ -26,7 +26,15 @@ async function loginUser(req, res) {
         }
         console.log(user)
         req.session.userId = user.user_id;
-        res.send('Login successful');
+        res.status(200).json({
+            status: 'success',
+            message: 'Login successful',
+            user: {
+                userId: user.user_id,
+                username: user.username,
+                email: user.email
+            }
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error logging in');

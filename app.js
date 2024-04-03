@@ -2,7 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const medicationRoutes = require('./routes/mediRoutes');
 const userRoutes = require('./routes/authRoutes');
-const orderRoutes = require('./routes/orderRoutes'); // Import order routes
+const orderRoutes = require('./routes/orderRoutes');
 const crypto = require('crypto');
 const myInfoRouter = require('./routes/myInfoRouter');
 
@@ -17,7 +17,6 @@ app.use(session({
     saveUninitialized: true
 }));
 
-// Define middleware to parse JSON requests
 app.use(express.json());
 
 // Define medication routes
@@ -38,6 +37,7 @@ app.get('/', (req, res) => {
 
 // Start the server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+const HOST = '192.168.43.2';
+app.listen(PORT, HOST, () => {
+    console.log(`Server is running on http://${HOST}:${PORT}`);
 });
