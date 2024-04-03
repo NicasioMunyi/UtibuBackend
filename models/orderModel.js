@@ -19,7 +19,7 @@ async function createOrder(orderData, userId, status) {
                 orderId,
                 item.medication_id,
                 item.quantity,
-                item.unit_price
+                item.unitPrice
             ]);
         }
 
@@ -43,26 +43,29 @@ async function createOrder(orderData, userId, status) {
 // Function to retrieve an order by its ID
 async function getOrderById(orderId) {
     try {
-        // Perform database operation to retrieve the order by its ID from the Orders table
-        const [orderRows] = await pool.query('SELECT * FROM Orders WHERE order_id = ?', [orderId]);
-
-        if (orderRows.length === 0) {
+        const [rows] = await pool.query('SELECT * FROM orders WHERE order_id = ?', [orderId]);
+        if (rows.length === 0) {
             throw new Error('Order not found');
         }
-
-        // Perform database operation to retrieve the order items from the Order_Items table
-        const [itemRows] = await pool.query('SELECT * FROM Order_Items WHERE order_id = ?', [orderId]);
-
-        // Combine order details and items into a single object
-        const order = {
-            order: orderRows[0],
-            items: itemRows
-        };
-
-        return order;
+        return rows[0];
     } catch (error) {
         console.error(error);
         throw new Error('Error fetching order by ID');
+    }
+}
+
+async function getMedicationsByOrderId(orderId) {
+    try {
+        const [rows] = await pool.query(`
+            SELECT oi.*, m.name AS medication_name
+            FROM Order_Items oi
+            JOIN Medications m ON oi.medication_id = m.medication_id
+            WHERE oi.order_id = ?
+        `, [orderId]);
+        return rows;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Error fetching medications by order ID');
     }
 }
 
@@ -80,5 +83,6 @@ async function getOrdersByUserId(userId) {
 module.exports = {
     createOrder,
     getOrderById,
-    getOrdersByUserId
+    getOrdersByUserId,
+    getMedicationsByOrderId
 };

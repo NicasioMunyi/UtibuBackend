@@ -43,9 +43,21 @@ async function getOrdersByUserId(req, res) {
     }
 }
 
+
+async function getOrderDetails(req, res) {
+    const orderId = req.params.orderId;
+    try {
+        const orderDetails = await orderService.getOrderDetails(orderId);
+        res.json(orderDetails);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 // Export the controller functions for use in the orderRoutes.js file
 module.exports = {
     getOrdersByUserId,
     createOrder,
-    getOrderById
+    getOrderById,
+    getOrderDetails
 };

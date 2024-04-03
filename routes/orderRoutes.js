@@ -11,5 +11,7 @@ router.get('/myorders', orderController.getOrdersByUserId);
 // Route to retrieve an order by ID
 router.get('/:id', orderController.getOrderById);
 
-// Export the router for use in the main app.js file
+// Define route to retrieve order details by ID
+router.get('/orders/:orderId', orderController.getOrderDetails);
+
 module.exports = router;

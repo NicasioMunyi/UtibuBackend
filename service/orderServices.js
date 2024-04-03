@@ -84,9 +84,24 @@ async function getOrdersByUserId(userId) {
     }
 }
 
+async function getOrderDetails(orderId) {
+    try {
+
+        console.log(orderId);
+        const order = await Order.getOrderById(orderId);
+        // Fetch medication details associated with the order
+        const medicationDetails = await Order.getMedicationsByOrderId(orderId);
+        console.log(medicationDetails);
+        return { order, medicationDetails };
+    } catch (error) {
+        throw new Error('Error fetching order details');
+    }
+}
+
 module.exports = {
     createOrder,
     getOrderById,
-    getOrdersByUserId // Corrected function name
+    getOrdersByUserId,
+    getOrderDetails
 };
 
