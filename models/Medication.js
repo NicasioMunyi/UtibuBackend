@@ -18,7 +18,7 @@ async function getMedicationById(medicationId) {
         const connection = await pool.getConnection();
         const [rows] = await connection.query('SELECT * FROM medications WHERE id = ?', [medicationId]);
         connection.release();
-        return rows[0]; // Assuming medication ID is unique and returning the first row
+        return rows[0];
     } catch (err) {
         console.error(err);
         throw new Error('Error fetching medication by ID');

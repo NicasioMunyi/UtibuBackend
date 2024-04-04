@@ -1,11 +1,10 @@
-// Import the order model
 const Order = require('../models/orderModel');
 const Medication = require('..//models/Medication');
 const pool = require('../config/database');
 
 async function getCurrentStockLevels() {
     try {
-        // Query the database to get current stock levels of all medications
+        // Query get current stock levels of all medications
         const [stockRows] = await pool.query('SELECT medication_id, stock_quantity FROM Medications');
         // Convert the result into an object where keys are medication IDs and values are stock levels
         const stockLevels = {};

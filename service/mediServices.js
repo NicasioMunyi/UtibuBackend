@@ -1,6 +1,6 @@
-// medicationservice.js
 
-const Medication = require('../models/Medication'); // Assuming Medication.js contains the database model for medications
+
+const Medication = require('../models/Medication');
 
 async function getAllMedications() {
     try {

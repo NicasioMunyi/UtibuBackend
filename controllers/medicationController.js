@@ -1,7 +1,5 @@
-// medicationController.js
 
-const medicationService = require('../service/mediServices'); // Assuming medicationService.js contains the service functions for medications
-
+const medicationService = require('../service/mediServices');
 // Controller function to handle GET request for all medications
 async function getAllMedications(req, res) {
     try {

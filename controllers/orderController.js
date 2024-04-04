@@ -1,12 +1,10 @@
-// Import the order service
-const { use } = require('../routes/mediRoutes');
 const orderService = require('../service/orderServices');
 
 // Controller function to handle order creation
 async function createOrder(req, res) {
     try {
         const orderData = req.body;
-        const userId = req.session.userId; // Assuming the user ID is stored in the session
+        const userId = req.session.userId;
         const orderId = await orderService.createOrder(orderData, userId);
         res.status(201).json({ orderId });
     } catch (error) {
