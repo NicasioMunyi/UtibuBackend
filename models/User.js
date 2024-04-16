@@ -1,5 +1,3 @@
-// userModel.js
-
 const pool = require('../config/database');
 
 async function createUser(userData) {

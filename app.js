@@ -23,7 +23,7 @@ app.use(express.json());
 app.use('/api/medications', medicationRoutes);
 
 // Define user routes
-app.use('/api/users', userRoutes);
+app.use('/api/users', userRoutes); 
 
 // Define order routes
 app.use('/api/orders', orderRoutes);
